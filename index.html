@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isabella Álvarez — Architecture Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Josefin+Sans:wght@100;200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --dark: #1A1712;
+    --charcoal: #2C2820;
+    --warm-gray: #8A8178;
+    --accent: #C4914A;
+    --accent-light: #E8C99A;
+    --white: #FDFAF5;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--dark);
+    color: var(--cream);
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.08em;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--accent);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: transform 0.35s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+  }
+  .cursor-ring.hover { width: 60px; height: 60px; opacity: 0.3; }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 28px 60px;
+    mix-blend-mode: normal;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex; gap: 40px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--warm-gray);
+    text-decoration: none;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--cream); }
+
+  /* ─── HERO ─── */
+  #hero {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 0 60px 80px;
+    position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 7vw, 7rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+  }
+  .hero-name em {
+    font-style: italic;
+    color: var(--accent-light);
+  }
+  .hero-desc {
+    margin-top: 32px;
+    font-size: 0.7rem;
+    line-height: 2;
+    color: var(--warm-gray);
+    max-width: 340px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.7s forwards;
+  }
+  .hero-cta {
+    margin-top: 48px;
+    display: flex; gap: 24px; align-items: center;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: var(--dark);
+    padding: 14px 32px;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: background 0.3s, transform 0.3s;
+  }
+  .btn-primary:hover { background: var(--accent-light); transform: translateY(-2px); }
+  .btn-ghost {
+    color: var(--warm-gray);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-bottom: 1px solid var(--warm-gray);
+    padding-bottom: 2px;
+    transition: color 0.3s, border-color 0.3s;
+  }
+  .btn-ghost:hover { color: var(--cream); border-color: var(--cream); }
+
+  .hero-right {
+    position: relative; overflow: hidden;
+    opacity: 0;
+    animation: fadeIn 1.4s ease 0.2s forwards;
+  }
+  .hero-image-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #2C2416 0%, #1A1208 100%);
+  }
+  .hero-grid-overlay {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(196,145,74,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(196,145,74,0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+  .hero-skyline {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 300px;
+    opacity: 0.12;
+  }
+  .hero-stat-block {
+    position: absolute; bottom: 80px; left: 60px;
+    display: flex; flex-direction: column; gap: 24px;
+  }
+  .hero-stat {
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .stat-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem;
+    font-weight: 300;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--warm-gray);
+  }
+  .hero-line {
+    position: absolute; top: 0; bottom: 0; left: 0;
+    width: 1px; background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+    opacity: 0.4;
+  }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 120px 60px; }
+
+  .section-label {
+    font-size: 0.55rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .section-label::after {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--accent); opacity: 0.5;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--accent-light); }
+
+  /* ─── ABOUT ─── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid rgba(196,145,74,0.15);
+  }
+  .about-text p {
+    margin-top: 32px;
+    font-size: 0.75rem;
+    line-height: 2.2;
+    color: var(--warm-gray);
+    max-width: 480px;
+  }
+  .skills-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+    margin-top: 40px;
+  }
+  .skill-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .skill-name {
+    font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm-gray); flex: 1;
+  }
+  .skill-dots { display: flex; gap: 4px; }
+  .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: rgba(196,145,74,0.2);
+  }
+  .dot.filled { background: var(--accent); }
+  .about-info {
+    display: flex; flex-direction: column; gap: 32px;
+  }
+  .info-card {
+    padding: 32px;
+    border: 1px solid rgba(196,145,74,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .info-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0;
+    width: 3px; height: 100%;
+    background: var(--accent);
+  }
+  .info-card-label {
+    font-size: 0.55rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+  }
+  .info-card-content {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300;
+    color: var(--cream); line-height: 1.8;
+  }
+  .info-card-content span { display: block; color: var(--warm-gray); font-size: 0.7rem; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.1em; margin-top: 4px; }
+
+  /* ─── PROJECTS ─── */
+  #projects { border-top: 1px solid rgba(196,145,74,0.15); }
+  .projects-header {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    margin-bottom: 64px;
+  }
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .project-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: var(--charcoal);
+    cursor: none;
+  }
+  .project-card:first-child {
+    grid-column: span 2;
+    aspect-ratio: auto;
+  }
+  .project-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.6s ease;
+  }
+  .project-card:hover .project-bg { transform: scale(1.05); }
+  .project-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(15,10,5,0.95) 0%, rgba(15,10,5,0.2) 60%, transparent 100%);
+    transition: opacity 0.4s;
+  }
+  .project-card:hover .project-overlay { opacity: 0.85; }
+  .project-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 32px;
+    transform: translateY(8px);
+    transition: transform 0.4s ease;
+  }
+  .project-card:hover .project-info { transform: translateY(0); }
+  .project-num {
+    font-size: 0.55rem; letter-spacing: 0.3em;
+    color: var(--accent); margin-bottom: 8px;
+  }
+  .project-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300;
+    color: var(--cream); line-height: 1.2;
+    margin-bottom: 6px;
+  }
+  .project-location {
+    font-size: 0.6rem; letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+  .project-tags {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 14px;
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.4s 0.1s, transform 0.4s 0.1s;
+  }
+  .project-card:hover .project-tags { opacity: 1; transform: translateY(0); }
+  .tag {
+    font-size: 0.5rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 4px 10px;
+    border: 1px solid rgba(196,145,74,0.4);
+    color: var(--accent-light);
+  }
+
+  /* Project gradient backgrounds (replacing real images) */
+  .bg-01 { background: linear-gradient(135deg, #3d2b1a 0%, #5c3d22 40%, #2d1f10 100%); }
+  .bg-02 { background: linear-gradient(135deg, #1a2d35 0%, #0d3a45 60%, #0a2030 100%); }
+  .bg-03 { background: linear-gradient(135deg, #2a2a35 0%, #1e1e2a 60%, #0f0f18 100%); }
+  .bg-04 { background: linear-gradient(135deg, #252015 0%, #3a2e1a 60%, #1a160c 100%); }
+  .bg-05 { background: linear-gradient(135deg, #152515 0%, #1e3a1e 60%, #0a180a 100%); }
+  .bg-06 { background: linear-gradient(135deg, #1a1520 0%, #2a2035 60%, #10080f 100%); }
+
+  .project-visual {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .arch-illustration {
+    width: 100%; height: 100%;
+    opacity: 0.35;
+  }
+
+  /* ─── INTERESTS ─── */
+  #interests {
+    border-top: 1px solid rgba(196,145,74,0.15);
+  }
+  .interests-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    margin-top: 64px;
+  }
+  .interest-card {
+    padding: 48px 40px;
+    border: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.4s;
+  }
+  .interest-card:hover { border-color: rgba(196,145,74,0.35); }
+  .interest-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(196,145,74,0.04) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .interest-card:hover::before { opacity: 1; }
+  .interest-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4rem; font-weight: 300;
+    color: rgba(196,145,74,0.15);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+  .interest-title {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--cream); margin-bottom: 20px;
+  }
+  .interest-desc {
+    font-size: 0.7rem; line-height: 2;
+    color: var(--warm-gray);
+  }
+
+  /* ─── CONTACT ─── */
+  #contact {
+    border-top: 1px solid rgba(196,145,74,0.15);
+    text-align: center;
+    padding: 160px 60px;
+  }
+  .contact-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 5rem);
+    font-weight: 300;
+    line-height: 1.1;
+    max-width: 700px;
+    margin: 32px auto 48px;
+  }
+  .contact-tagline em { font-style: italic; color: var(--accent-light); }
+  .contact-links {
+    display: flex; justify-content: center; gap: 48px;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    display: flex; flex-direction: column; gap: 6px;
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  .contact-link:hover { transform: translateY(-4px); }
+  .contact-link-label {
+    font-size: 0.5rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent);
+  }
+  .contact-link-value {
+    font-size: 0.75rem; letter-spacing: 0.1em;
+    color: var(--cream);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    padding: 32px 60px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy {
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    color: var(--warm-gray);
+  }
+  .footer-ig {
+    font-size: 0.55rem; letter-spacing: 0.2em;
+    color: var(--warm-gray); text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-ig:hover { color: var(--accent); }
+
+  /* ─── SCROLL INDICATOR ─── */
+  .scroll-indicator {
+    position: fixed; right: 32px; bottom: 40px; z-index: 50;
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 1; transition: opacity 0.4s;
+  }
+  .scroll-indicator.hidden { opacity: 0; }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--accent), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  .scroll-text {
+    writing-mode: vertical-rl;
+    font-size: 0.5rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--warm-gray);
+  }
+
+  /* ─── KEYFRAMES ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ─── REVEAL ON SCROLL ─── */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 24px 30px; }
+    section { padding: 80px 30px; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    #about { grid-template-columns: 1fr; gap: 48px; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .project-card:first-child { grid-column: span 1; aspect-ratio: 3/4; }
+    .interests-grid { grid-template-columns: 1fr; }
+    .contact-links { gap: 32px; }
+    footer { flex-direction: column; gap: 16px; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">Isabella Álvarez</a>
+  <ul class="nav-links">
+    <li><a href="#about">Perfil</a></li>
+    <li><a href="#projects">Proyectos</a></li>
+    <li><a href="#interests">Intereses</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+</nav>
+
+<!-- SCROLL INDICATOR -->
+<div class="scroll-indicator" id="scrollIndicator">
+  <div class="scroll-line"></div>
+  <span class="scroll-text">Scroll</span>
+</div>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Portafolio de Arquitectura · 2024</p>
+    <h1 class="hero-name">
+      Isabella<br><em>Álvarez</em>
+    </h1>
+    <p class="hero-desc">
+      Arquitecta emergente con visión sostenible, formada en ISTHMUS Escuela de Arquitectura. Especialista en diseño cultural, residencial y urbano con experiencia internacional en Panamá y Sevilla.
+    </p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn-primary">Ver Proyectos</a>
+      <a href="#contact" class="btn-ghost">Contactar</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-image-bg"></div>
+    <div class="hero-grid-overlay"></div>
+    <div class="hero-line"></div>
+
+    <!-- Architectural skyline SVG illustration -->
+    <svg class="hero-skyline" viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+      <g fill="none" stroke="#C4914A" stroke-width="1.5">
+        <!-- Buildings skyline -->
+        <polyline points="0,300 0,200 30,200 30,160 50,160 50,140 70,140 70,200 90,200 90,130 110,130 110,80 130,80 130,200 150,200 150,100 160,80 170,100 170,200 190,200 190,120 210,100 230,120 230,200 250,200 250,150 270,150 270,200 300,200 300,110 320,110 320,200 340,200 340,90 350,70 360,90 360,200 380,200 380,140 400,120 420,140 420,200 440,200 440,60 460,60 460,200 480,200 480,170 500,170 500,200 530,200 530,100 550,80 570,100 570,200 590,200 590,130 610,130 610,200 640,200 640,150 660,150 660,200 680,200 680,180 700,160 720,180 720,200 760,200 760,220 800,220 800,300"/>
+        <!-- Windows pattern -->
+        <rect x="50" y="145" width="5" height="5" opacity="0.4"/>
+        <rect x="60" y="145" width="5" height="5" opacity="0.4"/>
+        <rect x="50" y="155" width="5" height="5" opacity="0.4"/>
+        <rect x="110" y="90" width="6" height="6" opacity="0.4"/>
+        <rect x="120" y="90" width="6" height="6" opacity="0.4"/>
+        <rect x="110" y="100" width="6" height="6" opacity="0.4"/>
+        <rect x="120" y="100" width="6" height="6" opacity="0.4"/>
+        <rect x="340" y="100" width="6" height="6" opacity="0.4"/>
+        <rect x="350" y="100" width="6" height="6" opacity="0.4"/>
+        <rect x="440" y="75" width="6" height="6" opacity="0.4"/>
+        <rect x="450" y="75" width="6" height="6" opacity="0.4"/>
+        <rect x="440" y="85" width="6" height="6" opacity="0.4"/>
+        <rect x="450" y="85" width="6" height="6" opacity="0.4"/>
+      </g>
+    </svg>
+
+    <div class="hero-stat-block">
+      <div class="hero-stat">
+        <span class="stat-num">06</span>
+        <span class="stat-label">Proyectos destacados</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num">2+</span>
+        <span class="stat-label">Experiencia internacional</span>
+      </div>
+      <div class="hero-stat">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Países · Colombia, Senegal, España</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div class="about-text reveal">
+    <p class="section-label">Perfil Personal</p>
+    <h2 class="section-title">Diseño con<br><em>propósito</em></h2>
+    <p>Arquitecta panameña nacida en 2002, formada en ISTHMUS Escuela de Arquitectura y Diseño. Mi trabajo se orienta hacia la integración entre cultura, sostenibilidad y función — creando espacios que pertenecen al lugar donde existen.</p>
+    <p style="margin-top:16px;">Con pasantías en ALT-Q Arquitectos (Sevilla) y Ventura Arquitectos (Panamá), he desarrollado una visión que equilibra el rigor técnico con la sensibilidad creativa.</p>
+
+    <div class="skills-grid" style="margin-top:40px;">
+      <div class="skill-item">
+        <span class="skill-name">Revit</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">AutoCAD</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">SketchUp</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">D5 Render</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">Rhino + GH</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">Photoshop</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">Illustrator</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+      </div>
+      <div class="skill-item">
+        <span class="skill-name">PowerPoint</span>
+        <div class="skill-dots">
+          <div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div><div class="dot filled"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="about-info reveal reveal-delay-2">
+    <div class="info-card">
+      <p class="info-card-label">Formación</p>
+      <div class="info-card-content">
+        ISTHMUS Escuela de Arquitectura y Diseño
+        <span>Ciudad de Panamá, Panamá</span>
+      </div>
+    </div>
+    <div class="info-card">
+      <p class="info-card-label">Experiencia</p>
+      <div class="info-card-content">
+        ALT-Q Arquitectos · Pasante
+        <span>Sevilla, España</span>
+        <br>
+        Ventura Arquitectos · Pasante
+        <span>Ciudad de Panamá</span>
+      </div>
+    </div>
+    <div class="info-card">
+      <p class="info-card-label">Idiomas · Habilidades</p>
+      <div class="info-card-content">
+        Español (nativo) · Inglés
+        <span>Organizada · Creativa · Proactiva · Colaborativa</span>
+      </div>
+    </div>
+    <div class="info-card">
+      <p class="info-card-label">Contacto</p>
+      <div class="info-card-content">
+        <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e9809f808a9d869b8088dbd0dbd9d9dba98e84888085c78a8684">[email&#160;protected]</a>
+        <span>+507 6920-2378 · @isas.space</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROJECTS ═══ -->
+<section id="projects">
+  <div class="projects-header reveal">
+    <div>
+      <p class="section-label">Proyectos Seleccionados</p>
+      <h2 class="section-title">Obras que<br><em>hablan</em></h2>
+    </div>
+  </div>
+
+  <div class="projects-grid">
+    <!-- 01 Centro de Maternidad -->
+    <div class="project-card reveal">
+      <div class="project-bg bg-01">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Maternidad - low earthen building with repeated roofs -->
+              <rect x="60" y="180" width="480" height="120" fill="rgba(196,145,74,0.08)"/>
+              <polyline points="60,180 120,140 180,180"/>
+              <polyline points="180,180 240,140 300,180"/>
+              <polyline points="300,180 360,140 420,180"/>
+              <polyline points="420,180 480,140 540,180"/>
+              <line x1="60" y1="300" x2="540" y2="300"/>
+              <line x1="60" y1="180" x2="60" y2="300"/>
+              <line x1="540" y1="180" x2="540" y2="300"/>
+              <!-- windows -->
+              <rect x="100" y="200" width="20" height="30" opacity="0.5"/>
+              <rect x="220" y="200" width="20" height="30" opacity="0.5"/>
+              <rect x="340" y="200" width="20" height="30" opacity="0.5"/>
+              <rect x="460" y="200" width="20" height="30" opacity="0.5"/>
+              <!-- ground shadows -->
+              <ellipse cx="300" cy="310" rx="220" ry="10" fill="rgba(0,0,0,0.3)" stroke="none"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">01 — Concurso Internacional</p>
+        <h3 class="project-title">Centro de Maternidad</h3>
+        <p class="project-location">Sédhiou, Senegal</p>
+        <div class="project-tags">
+          <span class="tag">Cultural</span>
+          <span class="tag">Revit · Lumion</span>
+          <span class="tag">Adobe · Bambú</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 02 Aeroparque -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-bg bg-02">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Flor/orquídea shape overhead -->
+              <circle cx="150" cy="160" r="80" opacity="0.3"/>
+              <ellipse cx="150" cy="80" rx="40" ry="30" opacity="0.5"/>
+              <ellipse cx="215" cy="115" rx="40" ry="30" transform="rotate(60,215,115)" opacity="0.5"/>
+              <ellipse cx="215" cy="205" rx="40" ry="30" transform="rotate(120,215,205)" opacity="0.5"/>
+              <ellipse cx="150" cy="240" rx="40" ry="30" opacity="0.5"/>
+              <ellipse cx="85" cy="205" rx="40" ry="30" transform="rotate(60,85,205)" opacity="0.5"/>
+              <ellipse cx="85" cy="115" rx="40" ry="30" transform="rotate(120,85,115)" opacity="0.5"/>
+              <!-- runway -->
+              <line x1="20" y1="340" x2="280" y2="340"/>
+              <line x1="20" y1="360" x2="280" y2="360"/>
+              <line x1="100" y1="340" x2="100" y2="360"/>
+              <line x1="160" y1="340" x2="160" y2="360"/>
+              <line x1="220" y1="340" x2="220" y2="360"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">02</p>
+        <h3 class="project-title">Aeroparque La Orquídea</h3>
+        <p class="project-location">Honda, Colombia</p>
+        <div class="project-tags">
+          <span class="tag">Transporte</span>
+          <span class="tag">Revit · Lumion</span>
+          <span class="tag">Bambú</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 03 Biblioteca -->
+    <div class="project-card reveal">
+      <div class="project-bg bg-03">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Library L-shape building with central patio -->
+              <rect x="40" y="80" width="220" height="240" opacity="0.15" fill="rgba(196,145,74,0.05)"/>
+              <rect x="40" y="80" width="220" height="240"/>
+              <!-- inner patio void -->
+              <rect x="100" y="140" width="100" height="100" fill="rgba(0,0,0,0.4)"/>
+              <rect x="100" y="140" width="100" height="100" opacity="0.4"/>
+              <!-- facade lines -->
+              <line x1="40" y1="80" x2="260" y2="80"/>
+              <line x1="40" y1="130" x2="100" y2="130"/>
+              <line x1="200" y1="130" x2="260" y2="130"/>
+              <line x1="40" y1="240" x2="100" y2="240"/>
+              <line x1="200" y1="240" x2="260" y2="240"/>
+              <!-- windows -->
+              <line x1="60" y1="80" x2="60" y2="320"/>
+              <line x1="80" y1="80" x2="80" y2="130"/>
+              <line x1="240" y1="80" x2="240" y2="130"/>
+              <line x1="220" y1="80" x2="220" y2="320"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">03</p>
+        <h3 class="project-title">Edén de los Libros</h3>
+        <p class="project-location">Ciudad del Saber, Panamá</p>
+        <div class="project-tags">
+          <span class="tag">Equipamiento</span>
+          <span class="tag">Revit · D5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 04 Mercado -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-bg bg-04">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Market canopies -->
+              <polygon points="50,200 150,100 250,200" opacity="0.5"/>
+              <polygon points="80,240 150,150 220,240" opacity="0.4"/>
+              <line x1="150" y1="100" x2="150" y2="320"/>
+              <line x1="50" y1="200" x2="250" y2="200"/>
+              <line x1="80" y1="240" x2="220" y2="240"/>
+              <!-- structure legs -->
+              <line x1="80" y1="200" x2="70" y2="300"/>
+              <line x1="150" y1="200" x2="150" y2="320"/>
+              <line x1="220" y1="200" x2="230" y2="300"/>
+              <!-- stalls -->
+              <rect x="60" y="265" width="60" height="30" opacity="0.3"/>
+              <rect x="140" y="265" width="60" height="30" opacity="0.3"/>
+              <rect x="220" y="265" width="30" height="30" opacity="0.3"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">04</p>
+        <h3 class="project-title">Mercado Público</h3>
+        <p class="project-location">San Francisco, Ciudad de Panamá</p>
+        <div class="project-tags">
+          <span class="tag">Comercial</span>
+          <span class="tag">Revit · D5</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 05 Casa -->
+    <div class="project-card reveal">
+      <div class="project-bg bg-05">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Wooden house in forest -->
+              <rect x="60" y="160" width="180" height="140" fill="rgba(196,145,74,0.06)"/>
+              <rect x="60" y="160" width="180" height="140"/>
+              <polyline points="40,160 150,100 260,160"/>
+              <!-- terrace -->
+              <rect x="200" y="200" width="80" height="100" opacity="0.4"/>
+              <!-- windows large -->
+              <rect x="80" y="180" width="50" height="50" opacity="0.5"/>
+              <rect x="160" y="180" width="50" height="50" opacity="0.5"/>
+              <!-- vertical wood lines -->
+              <line x1="100" y1="160" x2="100" y2="300"/>
+              <line x1="130" y1="160" x2="130" y2="300"/>
+              <line x1="160" y1="160" x2="160" y2="300"/>
+              <line x1="190" y1="160" x2="190" y2="300"/>
+              <!-- trees suggestion -->
+              <circle cx="30" cy="120" r="30" opacity="0.2"/>
+              <circle cx="270" cy="140" r="25" opacity="0.2"/>
+              <line x1="30" y1="150" x2="30" y2="300"/>
+              <line x1="270" y1="165" x2="270" y2="300"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">05</p>
+        <h3 class="project-title">Casa de Segunda Vivienda</h3>
+        <p class="project-location">La Yeguada, Veraguas, Panamá</p>
+        <div class="project-tags">
+          <span class="tag">Residencial</span>
+          <span class="tag">Madera · Revit</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 06 Ciudad Gubernamental -->
+    <div class="project-card reveal reveal-delay-1">
+      <div class="project-bg bg-06">
+        <div class="project-visual">
+          <svg class="arch-illustration" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg">
+            <g fill="none" stroke="#C4914A" stroke-width="1">
+              <!-- Master plan hexagonal cluster -->
+              <polygon points="150,80 190,100 190,140 150,160 110,140 110,100" opacity="0.5"/>
+              <polygon points="190,130 220,145 220,175 190,190 160,175 160,145" opacity="0.4"/>
+              <polygon points="110,130 140,145 140,175 110,190 80,175 80,145" opacity="0.4"/>
+              <polygon points="150,170 185,190 185,225 150,245 115,225 115,190" opacity="0.35"/>
+              <!-- paths connecting -->
+              <line x1="150" y1="160" x2="150" y2="245"/>
+              <line x1="150" y1="120" x2="190" y2="130"/>
+              <line x1="150" y1="120" x2="110" y2="130"/>
+              <line x1="110" y1="190" x2="115" y2="190"/>
+              <line x1="190" y1="190" x2="185" y2="190"/>
+              <!-- greenery dots -->
+              <circle cx="150" cy="200" r="8" opacity="0.3"/>
+              <circle cx="130" cy="215" r="5" opacity="0.3"/>
+              <circle cx="170" cy="215" r="5" opacity="0.3"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">06</p>
+        <h3 class="project-title">Ciudad Gubernamental</h3>
+        <p class="project-location">Ancón, Ciudad de Panamá</p>
+        <div class="project-tags">
+          <span class="tag">Urbano</span>
+          <span class="tag">Revit · D5 · AutoCAD</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INTERESTS ═══ -->
+<section id="interests">
+  <div class="reveal">
+    <p class="section-label">Intereses & Habilidades</p>
+    <h2 class="section-title">Más allá del<br><em>plano</em></h2>
+  </div>
+
+  <div class="interests-grid">
+    <div class="interest-card reveal reveal-delay-1">
+      <div class="interest-num">01</div>
+      <p class="interest-title">Maquetas</p>
+      <p class="interest-desc">Trabajar con las manos es mi forma de conectar con lo que creo. Las maquetas me permiten entender el espacio tridimensionalmente y comunicarlo con claridad — tanto para mí como para quienes lo verán.</p>
+    </div>
+    <div class="interest-card reveal reveal-delay-2">
+      <div class="interest-num">02</div>
+      <p class="interest-title">Expresión Gráfica</p>
+      <p class="interest-desc">El dibujo es mi herramienta fundamental de exploración visual. Domino técnicas de plumilla, acuarela, marcadores y boceto arquitectónico — con un estilo que mezcla rigor técnico y sensibilidad artística.</p>
+    </div>
+    <div class="interest-card reveal reveal-delay-3">
+      <div class="interest-num">03</div>
+      <p class="interest-title">Diseño Paramétrico</p>
+      <p class="interest-desc">Rhino y Grasshopper me abrieron un universo de posibilidades formales. El diseño paramétrico me permite dar identidad única a cada proyecto, generando formas que nacen de la lógica del espacio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CONTACT ═══ -->
+<section id="contact">
+  <div class="reveal">
+    <p class="section-label">Contacto</p>
+    <h2 class="contact-tagline">
+      Construyamos algo<br><em>extraordinario</em> juntos
+    </h2>
+    <div class="contact-links">
+      <a href="/cdn-cgi/l/email-protection#a1c8d7c8c2d5ced3c8c0939893919193e1c6ccc0c8cd8fc2cecc" class="contact-link">
+        <span class="contact-link-label">Email</span>
+        <span class="contact-link-value"><span class="__cf_email__" data-cfemail="97fee1fef4e3f8e5fef6a5aea5a7a7a5d7f0faf6fefbb9f4f8fa">[email&#160;protected]</span></span>
+      </a>
+      <a href="tel:+50769202378" class="contact-link">
+        <span class="contact-link-label">Teléfono</span>
+        <span class="contact-link-value">+507 6920-2378</span>
+      </a>
+      <a href="https://instagram.com/isas.space" target="_blank" class="contact-link">
+        <span class="contact-link-label">Instagram</span>
+        <span class="contact-link-value">@isas.space</span>
+      </a>
+      <a href="#" class="contact-link">
+        <span class="contact-link-label">Ubicación</span>
+        <span class="contact-link-value">Ciudad de Panamá, Panamá</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-copy">© 2024 Isabella Álvarez — Portafolio de Arquitectura</span>
+  <a href="https://instagram.com/isas.space" target="_blank" class="footer-ig">@isas.space</a>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const animateRing = () => {
+    rx = lerp(rx, mx, 0.12);
+    ry = lerp(ry, my, 0.12);
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animateRing);
+  };
+  animateRing();
+
+  document.querySelectorAll('a, button, .project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIn
