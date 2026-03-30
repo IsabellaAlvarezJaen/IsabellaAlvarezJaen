@@ -381,7 +381,7 @@
   }
 
   /* ─── RESPONSIVE ─── */
-  /*@media (max-width: 900px) {
+ /* @media (max-width: 900px) {
     body { cursor: auto; }
     .cursor, .cursor-ring, .scroll-indicator { display: none; }
     nav { padding: 20px 24px; }
@@ -400,8 +400,92 @@
     #contact { padding: 80px 24px; }
     .contact-links { flex-direction: column; gap: 24px; align-items: center; }
     footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px; }
+  }*/
+  @media (max-width: 900px) {
+
+  body { cursor: auto; }
+
+  .cursor, .cursor-ring, .scroll-indicator {
+    display: none;
   }
-  */
+
+  nav {
+    padding: 16px 20px;
+  }
+
+  .nav-links {
+    gap: 16px;
+  }
+
+  section {
+    padding: 60px 20px;
+  }
+
+  /* HERO */
+  #hero {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
+  .hero-left {
+    padding: 120px 20px 40px;
+  }
+
+  .hero-name {
+    font-size: 2.5rem;
+  }
+
+  .hero-desc {
+    font-size: 0.75rem;
+  }
+
+  .hero-right {
+    display: block;
+    height: 250px;
+  }
+
+  /* ABOUT */
+  #about {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* PROJECTS */
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    aspect-ratio: 3/4;
+  }
+
+  /* INTERESTS */
+  .interests-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* CONTACT */
+  #contact {
+    padding: 80px 20px;
+  }
+
+  .contact-links {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  /* FOOTER */
+  footer {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
 </style>
 </head>
 <body>
