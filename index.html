@@ -131,10 +131,6 @@
     background: linear-gradient(to bottom, transparent, var(--accent), transparent);
     opacity: 0.4;
   }
-  .hero-skyline {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    height: 300px; opacity: 0.12;
-  }
   .hero-stat-block {
     position: absolute; bottom: 80px; left: 60px;
     display: flex; flex-direction: column; gap: 24px;
@@ -225,9 +221,13 @@
   .projects-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
   }
+
+  /* Works on both <div> and <a> elements */
   .project-card {
     position: relative; overflow: hidden;
     aspect-ratio: 3/4; cursor: none;
+    display: block;
+    text-decoration: none;
   }
   .project-card:first-child { grid-column: span 2; aspect-ratio: auto; min-height: 500px; }
 
@@ -264,19 +264,6 @@
     padding: 4px 10px;
     border: 1px solid rgba(196,145,74,0.4); color: var(--accent-light);
   }
-
-  .bg-01 { background: linear-gradient(135deg, #3d2b1a 0%, #5c3d22 40%, #2d1f10 100%); }
-  .bg-02 { background: linear-gradient(135deg, #1a2d35 0%, #0d3a45 60%, #0a2030 100%); }
-  .bg-03 { background: linear-gradient(135deg, #2a2a35 0%, #1e1e2a 60%, #0f0f18 100%); }
-  .bg-04 { background: linear-gradient(135deg, #252015 0%, #3a2e1a 60%, #1a160c 100%); }
-  .bg-05 { background: linear-gradient(135deg, #152515 0%, #1e3a1e 60%, #0a180a 100%); }
-  .bg-06 { background: linear-gradient(135deg, #1a1520 0%, #2a2035 60%, #10080f 100%); }
-
-  .project-visual {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .arch-illustration { width: 100%; height: 100%; opacity: 0.35; }
 
   /* ─── INTERESTS ─── */
   #interests { border-top: 1px solid rgba(196,145,74,0.15); }
@@ -441,7 +428,7 @@
 <!-- ═══ HERO ═══ -->
 <section id="hero">
   <div class="hero-left">
-    <p class="hero-eyebrow">Portafolio de Arquitectura </p>
+    <p class="hero-eyebrow">Portafolio de Arquitectura</p>
     <h1 class="hero-name">Isabella<br><em>Álvarez Jaén</em></h1>
     <p class="hero-desc">
       Arquitecta emergente con visión sostenible, formada en ISTHMUS Escuela de Arquitectura.
@@ -456,8 +443,6 @@
   <div class="hero-right" style="background-image: url('proyectos/Portada.png'); background-size: cover; background-position: center;">
     <div class="hero-grid-overlay"></div>
     <div class="hero-line"></div>
-   
-    
     <div class="hero-stat-block">
       <div>
         <div class="stat-num">06</div>
@@ -544,7 +529,7 @@
       <div class="info-card-content">
         ALT-Q Arquitectos · Pasante
         <span>Sevilla, España</span>
-        Ventura Arquitectos · Diseñadora Jr. 
+        Ventura Arquitectos · Diseñadora Jr.
         <span>Ciudad de Panamá</span>
       </div>
     </div>
@@ -575,76 +560,65 @@
   <div class="projects-grid">
 
     <!-- 02 Centro de Maternidad -->
-<div class="project-card reveal">
-  
-     <a href="proyectos/Proyecto-02.png" target="_blank" class="project-card reveal" style="text-decoration: none;">
-  <div class="project-bg" style="background-image: url('proyectos/Proyecto-02-portada.png'); background-size: cover; background-position: center;"></div>
-  <div class="project-overlay"></div>
-  <div class="project-info">
-    <p class="project-num">02 — Concurso Internacional</p>
-    <h3 class="project-title">Centro de Maternidad</h3>
-    <p class="project-location">Sédhiou, Senegal</p>
-    <div class="project-tags">
-      <span class="tag">Cultural</span>
-      <span class="tag">Revit · Lumion</span>
-      <span class="tag">Bambú · Adobe</span>
-    </div>
-  </div>
-</a>
+    <a href="proyectos/Proyecto-02.png" target="_blank" class="project-card reveal">
+      <div class="project-bg" style="background-image: url('proyectos/Proyecto-02-portada.png'); background-size: cover; background-position: center;"></div>
+      <div class="project-overlay"></div>
+      <div class="project-info">
+        <p class="project-num">02 — Concurso Internacional</p>
+        <h3 class="project-title">Centro de Maternidad</h3>
+        <p class="project-location">Sédhiou, Senegal</p>
+        <div class="project-tags">
+          <span class="tag">Cultural</span>
+          <span class="tag">Revit · Lumion</span>
+          <span class="tag">Bambú · Adobe</span>
+        </div>
+      </div>
+    </a>
 
     <!-- 03 Biblioteca -->
-<div class="project-card reveal">
-      <div class="project-bg" style="background-image: url('proyectos/proyecto-03.jpg'); background-size: cover; background-position: center;">
-      </div>
+    <a href="proyectos/proyecto-03.png" target="_blank" class="project-card reveal">
+      <div class="project-bg" style="background-image: url('proyectos/proyecto-03.jpg'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay"></div>
       <div class="project-info">
         <p class="project-num">03</p>
-        <a href="proyectos/proyecto-03.png" target="_blank" style="color: inherit; text-decoration: none; display: block;">
-          <h3 class="project-title">Edén de los Libros</h3>
-        </a>
+        <h3 class="project-title">Edén de los Libros</h3>
         <p class="project-location">Ciudad del Saber, Panamá</p>
         <div class="project-tags">
           <span class="tag">Equipamiento</span>
           <span class="tag">Revit · D5</span>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- 04 Casa -->
-<div class="project-card reveal">
-      <div class="project-bg" style="background-image: url('proyectos/Proyecto-04.jpg'); background-size: cover; background-position: center;">
-      </div>
+    <a href="proyectos/Proyecto-04.png" target="_blank" class="project-card reveal">
+      <div class="project-bg" style="background-image: url('proyectos/Proyecto-04.jpg'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay"></div>
       <div class="project-info">
         <p class="project-num">04</p>
-        <a href="proyectos/Proyecto-04.png" target="_blank" style="color: inherit; text-decoration: none; display: block;">
-          <h3 class="project-title">Casa de Segunda Vivienda</h3>
-        </a>
+        <h3 class="project-title">Casa de Segunda Vivienda</h3>
         <p class="project-location">La Yeguada, Veraguas, Panamá</p>
         <div class="project-tags">
           <span class="tag">Residencial</span>
           <span class="tag">Madera · Revit</span>
         </div>
       </div>
-    </div>
+    </a>
 
     <!-- 05 Ciudad Gubernamental -->
-<div class="project-card reveal reveal-delay-1">
-      <div class="project-bg" style="background-image: url('proyectos/Proyecto-05-portada.png'); background-size: cover; background-position: center;">
-      </div>
+    <a href="proyectos/Proyecto-05.png" target="_blank" class="project-card reveal reveal-delay-1">
+      <div class="project-bg" style="background-image: url('proyectos/Proyecto-05-portada.png'); background-size: cover; background-position: center;"></div>
       <div class="project-overlay"></div>
       <div class="project-info">
         <p class="project-num">05</p>
-        <a href="proyectos/Proyecto-05.png" target="_blank" style="color: inherit; text-decoration: none; display: block;">
-          <h3 class="project-title">Ciudad Gubernamental</h3>
-        </a>
+        <h3 class="project-title">Ciudad Gubernamental</h3>
         <p class="project-location">Ancón, Ciudad de Panamá</p>
         <div class="project-tags">
           <span class="tag">Urbano</span>
           <span class="tag">Revit · D5 · AutoCAD</span>
         </div>
       </div>
-    </div>
+    </a>
 
   </div>
 </section>
@@ -753,13 +727,13 @@
   var nav = document.getElementById('mainNav');
   window.addEventListener('scroll', function() {
     if (window.scrollY > 60) {
-      nav.style.background      = 'rgba(26,23,18,0.92)';
-      nav.style.backdropFilter  = 'blur(12px)';
-      nav.style.borderBottom    = '1px solid rgba(196,145,74,0.1)';
+      nav.style.background     = 'rgba(26,23,18,0.92)';
+      nav.style.backdropFilter = 'blur(12px)';
+      nav.style.borderBottom   = '1px solid rgba(196,145,74,0.1)';
     } else {
-      nav.style.background      = 'transparent';
-      nav.style.backdropFilter  = 'none';
-      nav.style.borderBottom    = 'none';
+      nav.style.background     = 'transparent';
+      nav.style.backdropFilter = 'none';
+      nav.style.borderBottom   = 'none';
     }
   });
 </script>
